@@ -19,7 +19,10 @@ import { LoginComponent } from './components/login/login.component';
 import { NoAccessComponent } from './components/no-access/no-access.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
-
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { UserFormComponent } from './components/user-form/user-form.component';
+import { PostFormComponent } from './components/post-form/post-form.component';
+import { TreeviewModule } from 'ngx-treeview';
 
 @NgModule({
   declarations: [
@@ -28,18 +31,26 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
     UsersComponent,
     LoginComponent,
     NoAccessComponent,
-    NavBarComponent
+    NavBarComponent,
+    DashboardComponent,
+    UserFormComponent,
+    PostFormComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    TreeviewModule.forRoot(),
     RouterModule.forRoot([
       { path: '', component: PostsComponent, canActivate: [AuthGuard] },
+      { path: 'posts/add', component: PostFormComponent, canActivate: [AuthGuard] },
+      { path: 'users/add', component: UserFormComponent, canActivate: [AuthGuard, AdminAuthGuard] },
+      { path: 'users/me', component: UserFormComponent, canActivate: [AuthGuard, AdminAuthGuard] },
       { path: 'users', component: UsersComponent, canActivate: [AuthGuard, AdminAuthGuard] },
       { path: 'login', component: LoginComponent },
-      { path: 'no-access', component: NoAccessComponent }
+      { path: 'no-access', component: NoAccessComponent },
+      
     ])
   ],
   providers: [
