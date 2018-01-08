@@ -23,6 +23,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UserFormComponent } from './components/user-form/user-form.component';
 import { PostFormComponent } from './components/post-form/post-form.component';
 import { TreeviewModule } from 'ngx-treeview';
+import { EventTreeComponent } from './components/event-tree/event-tree.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { TreeviewModule } from 'ngx-treeview';
     NavBarComponent,
     DashboardComponent,
     UserFormComponent,
-    PostFormComponent
+    PostFormComponent,
+    EventTreeComponent
   ],
   imports: [
     BrowserModule,
