@@ -10,13 +10,13 @@
             <div class="form-group">
               <label for="title">title</label>
               <span class="float-right" [ngClass]="{'text-danger': (titleLengthLimit - title.value.length) <= 0}">{{titleLengthLimit - title.value.length}}</span>
-              <input class="form-control" formControlName="title" id="title" placeholder="title" type="text" value="this.isEditingisEditing) ? this.postToEdit.Title : ''">
+              <input class="form-control" formControlName="title" id="title" placeholder="title" type="text" value="{{this.isEditing ? this.postToEdit.Title : ''}}">
             </div>
             <!--subject -->
             <div class="form-group">
               <label for="subject">subject</label>
               <span class="float-right" [ngClass]="{'text-danger': (subjectLengthLimit - subject.value.length) <= 0, 'text-warning': (subjectLengthLimit - subject.value.length) <= 10 && (subjectLengthLimit - subject.value.length) > 0}">{{subjectLengthLimit - subject.value.length}}</span>
-              <input class="form-control" formControlName="subject" id="subject" placeholder="subject" type="text" value="(this.isEditingisEditing) ? this.postToEdit.Excerpt : ''">
+              <input class="form-control" formControlName="subject" id="subject" placeholder="subject" type="text" value="{{this.isEditing ? this.postToEdit.Excerpt : ''}}">
             </div>
             <!-- image upload -->
             <div class="form-group">
@@ -44,17 +44,17 @@
             <!-- text -->
             <div class="form-group" *ngIf="this.bodyType.value == 'text'">
               <label for="body"> text body</label>
-              <textarea class="form-control" rows="6" formControlName="body" id="body" value="(this.isEditingisEditing) ? this.postToEdit.Body : ''"></textarea>
+              <textarea class="form-control" rows="6" formControlName="body" id="body" value="{{this.isEditing ? this.postToEdit.Body : ''}}"></textarea>
             </div>
             <!-- pdf -->
             <div class="form-group" *ngIf="bodyType.value == 'pdf'">
               <label for="body">pdf url</label>
-              <input class="form-control" placeholder="url" formControlName="body" type="text" id="body" value="(this.isEditingisEditing) ? this.postToEdit.Body : ''">
+              <input class="form-control" placeholder="url" formControlName="body" type="text" id="body" value="{{this.isEditing ? this.postToEdit.Body : ''}}">
             </div>
             <!-- vimeo -->
             <div class="form-group" *ngIf="bodyType.value == 'vimeo'">
               <label for="body">vimeo url</label>
-              <input class="form-control" placeholder="https://vimeo.com/" formControlName="body" type="text" id="body" value="(this.isEditingisEditing) ? this.postToEdit.Body : ''">
+              <input class="form-control" placeholder="https://vimeo.com/" formControlName="body" type="text" id="body" value="{{this.isEditing ? this.postToEdit.Body : ''}}">
             </div>
             <!-- options -->
             <hr>
@@ -65,18 +65,18 @@
             <div class="form-group">
               <label for="body" data-toggle="tooltip">offset</label>
               <span class="text-muted float-right" data-placement="right" title="number of days before or after event start when the post will be made visable. Example -14 would indicate 2 weeks before the start of the event. Leave blank for post to be visabile immediately" >?</span>
-              <input class="form-control" placeholder="" formControlName="offset" type="number" id="offset" default="0" value="(this.isEditingisEditing) ? this.postToEdit.Date_Visable : '' ">
+              <input class="form-control" placeholder="" formControlName="offset" type="number" id="offset" default="0" value="{{this.isEditing ? this.postToEdit.Date_Visable : '' }}">
             </div>
             <!-- expire date entry -->
             <div class="form-group">
               <label for="body">expire date</label>
               <span class="text-muted float-right" data-placement="right" title="Date post will no longer be visable to guests" >?</span>
-              <input class="form-control" placeholder="0" formControlName="expireDate" type="date" id="expireDate" value="(this.isEditingisEditing) ? this.postToEdit.Expire_Date : ''">
+              <input class="form-control" placeholder="0" formControlName="expireDate" type="date" id="expireDate" value="{{this.isEditing ? this.postToEdit.Expire_Date : ''}}">
             </div>
             <div class="form-group no-margin">
-              <button class="btn btn-lg btn-primary btn-block" type="submit">create</button>
-                <div *ngIf="goodPostCreation" class="alert alert-success">Post created</div>
-                <div *ngIf="badPostCreation" class="alert alert-danger">Post Could not be created, check fields</div>
+              <button class="btn btn-lg btn-primary btn-block" type="submit">{{this.isEditing ? 'update' : 'create'}}</button>
+                <div *ngIf="goodPostCreation" class="alert alert-success">Post {{ this.isEditing? 'updated' : 'created'}}</div>
+                <div *ngIf="badPostCreation" class="alert alert-danger"> could not  {{ this.isEditing ? 'update' : 'create'}}, make sure required fields are completed</div>
             </div>
           </form>
         </div>
@@ -84,7 +84,7 @@
     </div>
     <div class="col-md-5 col-sm-5 col-xs-5" style="margin-top:30px;">
         <span class="text-muted float-right" data-placement="right" title="If 0 events are selected the post will be visible to all events" >?</span>
-        <event-tree (seletedChanged)="onSelectedChange($event)" [prechecked]="(this.isEditingisEditing) ? this.postToEdit.Expire_Date : []"></event-tree>
+        <event-tree (seletedChanged)="onSelectedChange($event)" ></event-tree>
     </div>
   </div>
   

@@ -62,7 +62,7 @@ export class PostService {
   }
 
   update(resource){
-    return this.http.patch(this.url + '/' + resource.id, JSON.stringify({ isRead: true }))
+    return this.http.post(this.url + '/update/' + resource.oldPost.Post_ID,resource)
 
       .catch(this.handleError);
   }

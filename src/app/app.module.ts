@@ -24,6 +24,7 @@ import { UserFormComponent } from './components/user-form/user-form.component';
 import { PostFormComponent } from './components/post-form/post-form.component';
 import { TreeviewModule } from 'ngx-treeview';
 import { EventTreeComponent } from './components/event-tree/event-tree.component';
+import { SessionService } from './services/session.service';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { EventTreeComponent } from './components/event-tree/event-tree.component
     },
     AuthService,
     AdminAuthGuard,
-    AuthGuard
+    AuthGuard,
+    SessionService
     
   ],
   bootstrap: [AppComponent]

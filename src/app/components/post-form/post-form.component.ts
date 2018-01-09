@@ -1,3 +1,4 @@
+import { SessionService } from './../../services/session.service';
 import { PostService } from './../../services/post.service';
 import { Component, OnInit, Inject,Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -13,8 +14,8 @@ import { forEach } from '@angular/router/src/utils/collection';
 })
 export class PostFormComponent implements OnInit {
 
-  @Input('post') postToEdit;
-  @Input('is-editing') isEditing;
+  postToEdit;
+  isEditing;
 
   form: FormGroup;
 
@@ -27,13 +28,23 @@ export class PostFormComponent implements OnInit {
   badPostCreation = false;
   selectedEvents: number[];
   totalNumberOfEvents = 0;
-  constructor(@Inject(FormBuilder) fb: FormBuilder, private postService: PostService ){
+  constructor(@Inject(FormBuilder) fb: FormBuilder, private postService: PostService, private sessionService: SessionService){
+    let post = sessionService.getRouteObject('edit-post')
+    if(post){
+      this.postToEdit = post
+      this.isEditing = true
+      console.log('Editing', post);
+    }
 
     if(this.isEditing){
       this.submitButtonText = 'update';
+      
     }
 
+    this.initForm(fb);
+  }
 
+  initForm(fb){
     this.form = fb.group({
       title: ['', Validators.required],// Finish this.
       subject: ['', Validators.required],
@@ -81,16 +92,37 @@ export class PostFormComponent implements OnInit {
   }
 
   createPost(){
+    
     this.form.value.events = (this.selectedEvents.length == this.totalNumberOfEvents) ? [] : this.selectedEvents;
-    this.postService.create( this.form.value).subscribe((good) => {
-      this.goodPostCreation = true;
-      this.badPostCreation = false;
-      // if good
-      // navigtate back to post page
-    }, (err) => {
-      this.badPostCreation = true
-      this.goodPostCreation = false;
-    })
+    // Update
+    if(this.isEditing){
+      let data = { 
+        newPost: this.form.value,
+        oldPost: this.postToEdit
+      }
+      
+      this.postService.update(data).subscribe((good) => {
+        this.goodPostCreation = true;
+        this.badPostCreation = false;
+        // if good
+        // navigtate back to post page
+      }, (err) => {
+        this.badPostCreation = true
+        this.goodPostCreation = false;
+      })
+      
+    }else{ // Create
+      this.postService.create( this.form.value).subscribe((good) => {
+        this.goodPostCreation = true;
+        this.badPostCreation = false;
+        // if good
+        // navigtate back to post page
+      }, (err) => {
+        this.badPostCreation = true
+        this.goodPostCreation = false;
+      })
+
+    }
   }
 
 }

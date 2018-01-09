@@ -1,6 +1,8 @@
+import { Router } from '@angular/router';
 import { AuthService } from './../../services/auth.service';
 import { PostService } from './../../services/post.service';
 import { Component, OnInit } from '@angular/core';
+import { SessionService } from '../../services/session.service';
 
 @Component({
   selector: 'app-posts',
@@ -11,7 +13,7 @@ export class PostsComponent implements OnInit {
   posts = [];
   selectedPost : any;
 
-  constructor(private postService: PostService, private auth: AuthService) {
+  constructor(private postService: PostService, private auth: AuthService, private sessionService: SessionService) {
     // consttructor needs PostService to edit posts
     console.log();
     
@@ -23,6 +25,7 @@ export class PostsComponent implements OnInit {
 
   ngOnInit() {
     // get posts from server
+    this.sessionService.setRouteObject('edit-post',null);
   }
 
   delete(){
@@ -45,6 +48,7 @@ export class PostsComponent implements OnInit {
 
   edit(){
     console.log("Edit Post", this.selectedPost);
+    this.sessionService.setRouteObject('edit-post', this.selectedPost);
     // remove post from serverside db using postService
   }
 
