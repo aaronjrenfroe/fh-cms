@@ -1,0 +1,25 @@
+
+<section class="h-100" style="margin-top:100px">
+		<div class="container h-100">
+			<div class="row justify-content-md-center h-100">
+				<div class="card-wrapper">
+					<div class="card fat">
+						<div class="card-body">
+							<h4 class="card-title">Login</h4>
+							<form [formGroup]="form" (ngSubmit)="login()">
+								<div class="form-group">
+									<input class="form-control" formControlName="name" id="name" placeholder="name" type="text">
+								</div>
+								<div class="form-group">
+                    <input class="form-control" formControlName="password" placeholder="Password" type="password" value="">
+								</div>
+								<div class="form-group no-margin">
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">login</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>

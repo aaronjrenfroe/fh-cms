@@ -1,0 +1,55 @@
+<div class="container ">
+    <a routerLink="/users" class="btn btn-sm btn-secondary" style="margin-top:30px;">back</a>
+  <div class ="d-flex justify-content-center">
+    <div class="col-md-6 col-sm-6 col-xs-6 " style="margin-top:30px;">
+      <div class="card-body">
+        <h4 class="card-title">create user</h4>
+        <form [formGroup]="form" (ngSubmit)="submit()">
+            <div class="form-group">
+                <input class="form-control" formControlName="name" id="name" placeholder="name" type="text">
+                <div *ngIf="name.touched && name.invalid" class="alert alert-danger">
+                    <div *ngIf="name.errors.required">name required</div>
+                    <div *ngIf="name.errors.minlength">name should be minimum {{name.errors.minlength.requiredLength}} characters</div>
+                </div>
+            </div>
+            <div class="form-group">
+            <input class="form-control" formControlName="username" id="username" placeholder="username" type="text">
+            <div *ngIf="username.pending"> Checking for availability
+                <div class="text-danger">Username taken</div>
+            </div>
+            <div *ngIf="username.touched && username.invalid" class="alert alert-danger">
+                <div *ngIf="username.errors.required">Username required</div>
+                <div *ngIf="username.errors.minlength">Username should be minimum {{username.errors.minlength.requiredLength}} characters</div>
+                <div *ngIf="username.errors.cannotContainSpace">Username cannot contain space</div>
+                <div *ngIf="username.errors.shouldBeUnique">Username is already taken</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <input class="form-control" formControlName="password" placeholder="password" type="password" value="" >
+            <div *ngIf="password.touched && password.errors" class="alert alert-danger">
+                <div *ngIf="password.errors.required" class="alert alert-danger">password required</div>
+                <div *ngIf="password.errors.minlength" >password should be minimum {{password.errors.minlength.requiredLength}}</div>
+            </div>
+            
+          </div>
+          <div class="form-group">
+              <input class="form-control" formControlName="password2" placeholder="confirm" type="password" value="" (keyup)="passCheck()">
+              <div *ngIf="password2.touched && password.touched && passwordMissmatch" class="alert alert-danger">passwords do not match</div>
+              
+          </div>
+          <div class="form-group">
+              <label for="exampleFormControlSelect1">role</label>
+            <select class="form-control" id ="exampleFormControlSelect1"  formControlName="role" id="role">
+              <option>user</option>
+              <option>admin</option>
+            </select>
+          </div>
+          <div class="form-group no-margin">
+            
+            <button class="btn btn-lg btn-primary btn-block" type="submit">create</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

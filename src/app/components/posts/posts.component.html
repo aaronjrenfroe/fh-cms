@@ -1,0 +1,49 @@
+
+<div class="container clearfix">
+  <div style="margin-bottom: 10px;" class="float-right" >
+    <a routerLink="posts/add" class="btn btn-sm btn-success">Create Post</a>
+  </div>
+  <form class="form-inline my-2 my-lg-0">
+    <input class="form-control mr-sm-4" type="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+  </form>
+  <br>
+  <div class="row">
+    <div class="col-5 left-down box">
+      <div class="list-group scroll">
+        <div *ngFor="let post of posts" class="list-group-item flex-column list-group-item-action align-items-start clearfix" (click)="postWasClicked(post)">
+
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">{{post.Title}}</h5>
+              <small class="text-muted">Offset: {{post.Date_Visable}}</small>
+            </div>
+            <p class="mb-1">{{ post.Excerpt }}</p>
+            <small class="text-muted" >{{ post.blerb }}</small>
+
+            <!-- End -->
+        </div>
+      </div>
+    </div>
+    <div class="col-7 float-right">
+      <div *ngIf="selectedPost" class="tab-content ">
+        <div class="clearfix">
+            <!-- Only show if user is admin or post belongs to user-->
+            <button (click)="edit()"class="btn btn-warning btn-sm float-right " *ngIf="this.auth.currentUser._id == selectedPost.User_ID || this.auth.currentUser.access == 'admin'" style="margin-right: 10px;">edit</button>
+            <button (click)="delete()"class="btn btn-danger btn-sm float-right " *ngIf="this.auth.currentUser._id == selectedPost.User_ID || this.auth.currentUser.access == 'admin'" style="margin-right: 10px;">delete</button>
+          <h5> {{selectedPost.Title}}</h5>
+          <hr>
+          <img class="float-right"src="{{selectedPost.Thumnail_Url}}" alt="{{selectedPost.Title}}" width="300" style="margin:10px;">
+          <h6>Discription: </h6>
+          <div>{{selectedPost.Excerpt}}</div>  
+          <h6>Body: </h6>
+          <div *ngIf="selectedPost.Post_Type == 'text'">{{selectedPost.Body}}</div>
+          <div *ngIf=" selectedPost.Post_Type != 'text'">
+            <a href="{{selectedPost.Body}}" target="_blank">{{selectedPost.Post_Type }} ink</a>
+          </div>
+          <h6>Bound Events:</h6>
+          <div *ngIf="selectedPost.Events.length > 0"> {{selectedPost.Events.length}} </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,6 @@
+<p>Events: {{selectedEvents.length}}</p>
+<ngx-treeview
+    [config]="treeviewConfig"
+    [items]="treeviewItems"
+    (selectedChange)="onSelectedChange($event)">
+</ngx-treeview>
