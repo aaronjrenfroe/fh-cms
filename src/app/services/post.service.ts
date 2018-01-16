@@ -12,15 +12,19 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/retry';
+import { resolve } from 'q';
 
 
 
 @Injectable()
 export class PostService {
   url: string
-  constructor(private http: HttpClient, private auth: AuthService) {
-    this.url = 'http://localhost:3000/api/posts';
+  eventsData : any;
+  eventsLastUpdateTime = 0;
 
+  constructor(private http: HttpClient, private auth: AuthService) {
+    
+    this.url = 'http://localhost:3000/api/posts';
   }
 
   getAll(callback) {
@@ -35,7 +39,12 @@ export class PostService {
   }
 
   getAllEvents(callback) {
+    if(this.eventsLastUpdateTime + 600000 > Date.now()){
+      callback(this.eventsData)
+    }
     this.http.get('http://localhost:3000/api/events').subscribe((data) => {
+      this.eventsLastUpdateTime = Date.now();
+      this.eventsData = data;
       return callback(data);
     }, (err) => {
       // this.handleError(err);
@@ -43,14 +52,47 @@ export class PostService {
     });
   }
 
+  uploadImage(file){
+    return new Promise((resolve, reject) => {
+      this.http.get(`http://localhost:3000/sign-s3?file-name=${file.name}&file-type=${file.type}`).subscribe(async (res: any) => {
+        console.log(res);
+        
+        let url = await this.uploadFile(file, res.signedRequest, res.url);
+        resolve(url)
+      }, err => {
+        reject(err);
+      });
+    });
+  }
+
+  private uploadFile(file, signedRequest, url){
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('PUT', signedRequest);
+      xhr.onreadystatechange = () => {
+        if(xhr.readyState === 4){
+          if(xhr.status === 200){
+            resolve(url);
+          }
+          else{
+            reject({ response: xhr});
+          }
+        }
+      };
+      console.log('Uploading');
+      xhr.send(file);
+    });
+  }
+
   create(resource) {
-    console.log(resource);
-    
+  
+    // then when we have an image url upload image
+
     let reMapped = {
       Title: resource.title,
       User_ID: this.auth.currentUser._id,
       Excerpt: resource.subject,
-      Thumnail_Url: 'http://lorempixel.com/1920/1080',
+      Thumnail_Url: resource.image,
       Post_Type: resource.bodyType,
       Body: resource.body,
       Date_Visable: resource.offset,

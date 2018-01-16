@@ -112,11 +112,23 @@ export class EventTreeComponent implements OnInit {
   }
 
   onSelectedChange(event){
-    this.selectedEvents = (event as string[]).map(value => {
-      return this.valueToIDTable[value].EventID;
-    });
-    console.log(this.selectedEvents);
 
+    this.selectedEvents = (event as string[]).map(value => {
+      let tags = "";
+      let selEvent = this.valueToIDTable[value]
+      
+      for(let key in selEvent){
+        let value = ''.concat(selEvent[key]);
+        value = value.replace('(','');
+        value = value.replace(')','');
+        value = value.replace('/','');
+        value = value.replace('\\','');
+        value = value.replace('\n','');
+        value = value.replace('\r','');
+        tags += ' ' + value;
+      }
+      return {eventId: selEvent.EventID, tags};
+    });
     this.seletedChanged.emit({selected:this.selectedEvents, total: this.allEvents.length});
   }
 

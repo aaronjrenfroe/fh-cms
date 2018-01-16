@@ -4,22 +4,22 @@
     <a routerLink="posts/add" class="btn btn-sm btn-success">Create Post</a>
   </div>
   <form class="form-inline my-2 my-lg-0">
-    <input class="form-control mr-sm-4" type="search" placeholder="Search" aria-label="Search">
+    <input class="form-control mr-sm-4" type="search" placeholder="Search" (keyup)="searchKeyUp($event)" aria-label="Search">
     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
   </form>
   <br>
   <div class="row">
     <div class="col-5 left-down box">
       <div class="list-group scroll">
-        <div *ngFor="let post of posts" class="list-group-item flex-column list-group-item-action align-items-start clearfix" (click)="postWasClicked(post)">
-
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">{{post.Title}}</h5>
-              <small class="text-muted">Offset: {{post.Date_Visable}}</small>
-            </div>
-            <p class="mb-1">{{ post.Excerpt }}</p>
-            <small class="text-muted" >{{ post.blerb }}</small>
-
+        <div *ngFor="let post of searchResults" class="list-group-item flex-column list-group-item-action align-items-start clearfix" (click)="postWasClicked(post)">  
+            <small class="float-right text-muted">{{post.Date_Visable?  "Offset: " +post.Date_Visable : ''}}</small>
+            <div class="media">
+                <img class="align-self-start mr-3" src="{{post.Thumnail_Url}}" alt="Generic placeholder image" width="64px">
+                <div class="media-body">
+                  <h5 class="mt-0">{{post.Title}}</h5>
+                  <p class="mb-1">{{ post.Excerpt }}</p>
+                </div>
+              </div>
             <!-- End -->
         </div>
       </div>
@@ -32,7 +32,7 @@
             <button (click)="delete()"class="btn btn-danger btn-sm float-right " *ngIf="this.auth.currentUser._id == selectedPost.User_ID || this.auth.currentUser.access == 'admin'" style="margin-right: 10px;">delete</button>
           <h5> {{selectedPost.Title}}</h5>
           <hr>
-          <img class="float-right"src="{{selectedPost.Thumnail_Url}}" alt="{{selectedPost.Title}}" width="300" style="margin:10px;">
+          <img class="rounded img-thumbnail text-center" src="{{selectedPost.Thumnail_Url}}" style="margin:10px;">
           <h6>Discription: </h6>
           <div>{{selectedPost.Excerpt}}</div>  
           <h6>Body: </h6>
@@ -40,8 +40,15 @@
           <div *ngIf=" selectedPost.Post_Type != 'text'">
             <a href="{{selectedPost.Body}}" target="_blank">{{selectedPost.Post_Type }} ink</a>
           </div>
-          <h6>Bound Events:</h6>
-          <div *ngIf="selectedPost.Events.length > 0"> {{selectedPost.Events.length}} </div>
+          
+          <div *ngIf="selectedPost.Events.length > 0">
+            <h6>Bound Events: {{selectedPost.Events.length}}</h6>
+            <ul>
+              <li *ngFor="let event of selectedPost.Events">{{getEventNameForID(event)}}</li>
+            </ul>
+
+          </div>
+          
         </div>
       </div>
     </div>

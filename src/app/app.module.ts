@@ -25,6 +25,7 @@ import { PostFormComponent } from './components/post-form/post-form.component';
 import { TreeviewModule } from 'ngx-treeview';
 import { EventTreeComponent } from './components/event-tree/event-tree.component';
 import { SessionService } from './services/session.service';
+import { UserSettingsComponent } from './components/user-settings/user-settings.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { SessionService } from './services/session.service';
     DashboardComponent,
     UserFormComponent,
     PostFormComponent,
-    EventTreeComponent
+    EventTreeComponent,
+    UserSettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +51,7 @@ import { SessionService } from './services/session.service';
       { path: '', component: PostsComponent, canActivate: [AuthGuard] },
       { path: 'posts/add', component: PostFormComponent, canActivate: [AuthGuard] },
       { path: 'users/add', component: UserFormComponent, canActivate: [AuthGuard, AdminAuthGuard] },
-      { path: 'users/me', component: UserFormComponent, canActivate: [AuthGuard, AdminAuthGuard] },
+      { path: 'users/me', component: UserSettingsComponent, canActivate: [AuthGuard]},
       { path: 'users', component: UsersComponent, canActivate: [AuthGuard, AdminAuthGuard] },
       { path: 'login', component: LoginComponent },
       { path: 'no-access', component: NoAccessComponent },

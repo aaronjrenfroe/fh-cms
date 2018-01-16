@@ -39,7 +39,9 @@ export class UserService{
   }
 
   update(resource){
-    return this.http.patch(this.url + '/' + resource.id, {isRead: true})
+    console.log("Running");
+    
+    return this.http.post(this.url + '/' + resource._id, resource)
       .catch(this.handleError);
   }
 
@@ -50,6 +52,7 @@ export class UserService{
   }
 
   private handleError(error: Response){
+
     if(error.status === 404){
       return Observable.throw(new NotFoundError());
     }else if(error.status === 400){

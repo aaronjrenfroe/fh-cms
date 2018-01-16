@@ -1,8 +1,16 @@
 <div class="container">
+    <div *ngIf="postToEdit">
+        
+        <img class="rounded img-thumbnail text-center" src="{{postToEdit.Thumnail_Url}}" height="100" style="margin:10px;">
+        
+      </div>
+</div>
+<div class="container">
     <div class="row">
       <div class="col-md-7 col-sm-7 col-xs-7">
       <div class="container ">
         <div class="card-body">
+           
           <h4 class="card-title">content</h4>
           <!-- form -->
           <form [formGroup]="form" (ngSubmit)="createPost()">
@@ -10,19 +18,21 @@
             <div class="form-group">
               <label for="title">title</label>
               <span class="float-right" [ngClass]="{'text-danger': (titleLengthLimit - title.value.length) <= 0}">{{titleLengthLimit - title.value.length}}</span>
-              <input class="form-control" formControlName="title" id="title" placeholder="title" type="text" value="{{this.isEditing ? this.postToEdit.Title : ''}}">
+              <input class="form-control" formControlName="title" id="title" placeholder="title" type="text">
             </div>
             <!--subject -->
             <div class="form-group">
               <label for="subject">subject</label>
               <span class="float-right" [ngClass]="{'text-danger': (subjectLengthLimit - subject.value.length) <= 0, 'text-warning': (subjectLengthLimit - subject.value.length) <= 10 && (subjectLengthLimit - subject.value.length) > 0}">{{subjectLengthLimit - subject.value.length}}</span>
-              <input class="form-control" formControlName="subject" id="subject" placeholder="subject" type="text" value="{{this.isEditing ? this.postToEdit.Excerpt : ''}}">
+              <input class="form-control" formControlName="subject" id="subject" placeholder="subject" type="text">
             </div>
+
+            
             <!-- image upload -->
             <div class="form-group">
-              <label for="exampleFormControlFile1">background image</label>
-              <span class="text-muted float-right">1080w x 608h and < 10mb (jpg, jpeg, png, gif)</span>
-              <input type="file" class="form-control-file" id="exampleFormControlFile1">
+              <label for="exampleFormControlFile1" data-toggle="tooltip">background image</label>
+              <span class="text-muted float-right" data-placement="right" title="1080w x 608h and < 10mb (jpg, jpeg, png, gif)">requirments</span>
+              <input type="file" class="form-control-file" id="image" (change)="onFileChange($event)">
             </div>
             <!-- body type radio buttons -->
             <div class="form-group">
@@ -44,17 +54,17 @@
             <!-- text -->
             <div class="form-group" *ngIf="this.bodyType.value == 'text'">
               <label for="body"> text body</label>
-              <textarea class="form-control" rows="6" formControlName="body" id="body" value="{{this.isEditing ? this.postToEdit.Body : ''}}"></textarea>
+              <textarea class="form-control" rows="6" formControlName="body" id="body" ></textarea>
             </div>
             <!-- pdf -->
             <div class="form-group" *ngIf="bodyType.value == 'pdf'">
               <label for="body">pdf url</label>
-              <input class="form-control" placeholder="url" formControlName="body" type="text" id="body" value="{{this.isEditing ? this.postToEdit.Body : ''}}">
+              <input class="form-control" placeholder="url" formControlName="body" type="text" id="body">
             </div>
             <!-- vimeo -->
             <div class="form-group" *ngIf="bodyType.value == 'vimeo'">
               <label for="body">vimeo url</label>
-              <input class="form-control" placeholder="https://vimeo.com/" formControlName="body" type="text" id="body" value="{{this.isEditing ? this.postToEdit.Body : ''}}">
+              <input class="form-control" placeholder="https://vimeo.com/" formControlName="body" type="text" id="body">
             </div>
             <!-- options -->
             <hr>
@@ -65,13 +75,13 @@
             <div class="form-group">
               <label for="body" data-toggle="tooltip">offset</label>
               <span class="text-muted float-right" data-placement="right" title="number of days before or after event start when the post will be made visable. Example -14 would indicate 2 weeks before the start of the event. Leave blank for post to be visabile immediately" >?</span>
-              <input class="form-control" placeholder="" formControlName="offset" type="number" id="offset" default="0" value="{{this.isEditing ? this.postToEdit.Date_Visable : '' }}">
+              <input class="form-control" placeholder="" formControlName="offset" type="number" id="offset" default="0">
             </div>
             <!-- expire date entry -->
             <div class="form-group">
               <label for="body">expire date</label>
               <span class="text-muted float-right" data-placement="right" title="Date post will no longer be visable to guests" >?</span>
-              <input class="form-control" placeholder="0" formControlName="expireDate" type="date" id="expireDate" value="{{this.isEditing ? this.postToEdit.Expire_Date : ''}}">
+              <input class="form-control" placeholder="0" formControlName="expireDate" type="date" id="expireDate">
             </div>
             <div class="form-group no-margin">
               <button class="btn btn-lg btn-primary btn-block" type="submit">{{this.isEditing ? 'update' : 'create'}}</button>
