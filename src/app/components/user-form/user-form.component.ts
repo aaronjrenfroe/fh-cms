@@ -43,11 +43,9 @@ export class UserFormComponent{
   }
 
   submit(){
-    console.log(this.password);
-    console.log(this.form.value);
     
     if(!this.form.valid){
-      console.log('cant submit');
+      
     }else{
       let val = this.form.value;
       let newUser = {
@@ -56,14 +54,13 @@ export class UserFormComponent{
         password: val.password,
         privleges: val.role
       };
-      console.log(newUser);
+      
       
       this.userService.create(newUser).subscribe((user) => {
         if(user){
           this.router.navigate(['/users']);
         }
       },(error) => {
-        console.log(error);
         
       });
     }

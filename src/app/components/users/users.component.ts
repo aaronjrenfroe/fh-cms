@@ -29,6 +29,10 @@ export class UsersComponent implements OnInit {
 
    }
 
+   get passwordIsEmpty(){
+     return this.passwordForm.value.password.length > 0;
+   }
+
   ngOnInit() {
     // fetch users from db and and set users
     this.loadPosts();
@@ -45,7 +49,7 @@ export class UsersComponent implements OnInit {
   loadUsers(){
     this.userService.getAll((users) => {
       this.users = users;
-      console.log('Users',users);
+      
     });
   }
 
@@ -69,43 +73,40 @@ export class UsersComponent implements OnInit {
   getPasswordForm(){
     return new FormGroup({
       password: new FormControl('', 
-      [Validators.required, Validators.minLength(6)])
+      [Validators.minLength(6)])
     });
   }
 
   delete(user){
-    console.log("Delete user", user);
+    
     let idx = this.users.indexOf(user);
     this.users.splice(idx, 1);
     this.userService.delete(user._id).subscribe(deletedUser => {
       if(deletedUser == user){
-        console.log('deleted');
+        alert("Deleted User: " + user.username);
       }
-      console.log(deletedUser, user);
-      
 
     },(error)=>{
-      console.log(error);
+      alert("Error deleted user: " + error);
     })
     // remove post from serverside db using postService
   }
 
   edit(user){
-    console.log("Edit user", user);
+    
     this.form.controls['name'].setValue(user.name);
     this.form.controls['username'].setValue(user.username);
     this.form.controls['role'].setValue(user.privleges);
 
     if(this.editingUser){
-      console.log("this is running");
+      
       let updatedName = this.form.value.name;
       let updatedUsername = this.form.value.username;
       let updatedRole = this.form.value.role;
 
-      console.log(updatedName, updatedUsername, updatedRole);
     }
     this.editingUser = user;
-    // remove post from serverside db using postService
+
   }
 
   updateUser(){
@@ -126,7 +127,7 @@ export class UsersComponent implements OnInit {
     this.userService.update(updatedUser);
     this.userService.update(updatedUser).subscribe((user)=> {
       this.loadUsers();
-      console.log(user);
+      
     });
     
   }
@@ -136,7 +137,7 @@ export class UsersComponent implements OnInit {
     let updatedUser = {}
     updatedUser["_id"] = this.editingUser._id
     updatedUser["password"] = formValue.password;
-    console.log("Password Change Payload:", updatedUser);
+    
     this.userService.update(updatedUser).subscribe((user)=> {
       this.loadUsers();
     });

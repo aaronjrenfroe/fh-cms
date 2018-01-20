@@ -28,7 +28,7 @@
       <div *ngIf="selectedPost" class="tab-content ">
         <div class="clearfix">
             <!-- Only show if user is admin or post belongs to user-->
-            <a class="btn btn-warning btn-sm float-right" routerLink="/posts/add" (click)="edit()" *ngIf="this.auth.currentUser._id == selectedPost.User_ID || this.auth.currentUser.access == 'admin'" style="margin-right: 10px;"> edit</a>
+            <a class="btn btn-warning btn-sm float-right" routerLink="/posts/edit/{{selectedPost.Post_ID}}" (click)="edit()" *ngIf="this.auth.currentUser._id == selectedPost.User_ID || this.auth.currentUser.access == 'admin'" style="margin-right: 10px;"> edit</a>
             <button (click)="delete()"class="btn btn-danger btn-sm float-right " *ngIf="this.auth.currentUser._id == selectedPost.User_ID || this.auth.currentUser.access == 'admin'" style="margin-right: 10px;">delete</button>
           <h5> {{selectedPost.Title}}</h5>
           <hr>

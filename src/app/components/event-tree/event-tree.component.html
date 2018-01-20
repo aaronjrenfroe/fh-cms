@@ -1,4 +1,4 @@
-<p>Events: {{selectedEvents.length}}</p>
+<p> Visable to {{(selectedEvents.length == 0 || selectedEvents.length == allEvents.length)?  'all' : selectedEvents.length}} events</p>
 <ngx-treeview
     [config]="treeviewConfig"
     [items]="treeviewItems"

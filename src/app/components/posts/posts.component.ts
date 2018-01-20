@@ -14,14 +14,14 @@ export class PostsComponent implements OnInit {
   selectedPost : any;
   searchTerms = [];
   searchResults = [];
-  allEvents : any[];
+  allEvents : any[] = [];
   constructor(private postService: PostService, private auth: AuthService, private sessionService: SessionService) {
     // consttructor needs PostService to edit posts
-    console.log();
-    
     postService.getAll((posts) => {
       this.posts = posts
-      this.selectedPost= posts[0];
+      this.selectedPost = posts[0];
+      
+      
       this.updateSearch();
     });
     postService.getAllEvents((events) => {
@@ -38,8 +38,6 @@ export class PostsComponent implements OnInit {
     if(this.searchTerms.length == 0){
       this.searchResults = this.posts;
     }else{
-      console.log(this.searchTerms);
-      
       this.searchResults = this.posts.filter(post => {
         for(let key in post){
           for(let term in this.searchTerms){
@@ -56,29 +54,29 @@ export class PostsComponent implements OnInit {
         }
         return false;
       }); // end filter
-    }
-    console.log(this.searchResults);
+    } 
   }
 
   delete(){
-    console.log("Delete Post", this.selectedPost);
-    let idx = this.posts.indexOf(this.selectedPost);
-    let deleted_post = this.posts.splice(idx, 1);
-    console.log(deleted_post);
+   
+    if(confirm("Are you sure to delete post titled "+this.selectedPost.Title)) {
+      let idx = this.posts.indexOf(this.selectedPost);
+      let deleted_post = this.posts.splice(idx, 1);
 
-    this.postService.delete(deleted_post[0].Post_ID).subscribe((post => {
-      this.selectedPost = null;
-    }), error => {
-      if(error){
-        this.posts. splice(idx, 0, this.selectedPost);
-        console.log(error);
-      }
-    })
-    // remove post from serverside db using postService
+      this.postService.delete(deleted_post[0].Post_ID).subscribe((post => {
+        this.posts.splice(idx,1);
+        this.selectedPost = null;
+      }), error => {
+        if(error){
+          this.posts. splice(idx, 0, this.selectedPost);
+        }
+      })
+    }
   }
 
+
   edit(){
-    console.log("Edit Post", this.selectedPost);
+    
     this.sessionService.setRouteObject('edit-post', this.selectedPost);
     // remove post from serverside db using postService
   }
@@ -99,10 +97,9 @@ export class PostsComponent implements OnInit {
       return event.EventID == id;
     });
     if(event.length > 0){
-      console.log(event[0]);
       return event[0].EventName;
     }
     return 'Unknown event with id: ' + id;
   }
-
+  
 }

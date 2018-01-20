@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment';
 import { AppError } from './../common/app-error';
 import { BadInputError } from './../common/bad-input';
 import { NotFoundError } from './../common/not-found-error';
@@ -23,17 +24,25 @@ export class PostService {
   eventsLastUpdateTime = 0;
 
   constructor(private http: HttpClient, private auth: AuthService) {
-    
-    this.url = 'http://localhost:3000/api/posts';
+
+    this.url = environment.apiUrl;
   }
 
-  getAll(callback) {
-    this.http.get(this.url).subscribe((data) => {
+  getPost(id, callback){
+    this.http.get(this.url + '/posts/' + id).subscribe((data) => {
       return callback(data);
     }, (err) => {
       // this.handleError(err);
-      console.log(err);
+      alert("Could not get post with id " + id + err);
+    });
+  }
 
+  getAll(callback) {
+    this.http.get(this.url + '/posts').subscribe((data) => {
+      return callback(data);
+    }, (err) => {
+      // this.handleError(err);
+      alert("Could not get posts: " + err);
     })
 
   }
@@ -42,24 +51,27 @@ export class PostService {
     if(this.eventsLastUpdateTime + 600000 > Date.now()){
       callback(this.eventsData)
     }
-    this.http.get('http://localhost:3000/api/events').subscribe((data) => {
+    this.http.get(this.url+'/events').subscribe((data) => {
       this.eventsLastUpdateTime = Date.now();
       this.eventsData = data;
       return callback(data);
     }, (err) => {
       // this.handleError(err);
-      console.log(err);
+      alert("Could not get events: " + err);
     });
   }
 
   uploadImage(file){
+    console.log("uploadingImage");
+    
     return new Promise((resolve, reject) => {
-      this.http.get(`http://localhost:3000/sign-s3?file-name=${file.name}&file-type=${file.type}`).subscribe(async (res: any) => {
-        console.log(res);
-        
+      this.http.get(this.url+`/image/sign-s3?file-name=${file.name}&file-type=${file.type}`).subscribe(async (res: any) => {
+
         let url = await this.uploadFile(file, res.signedRequest, res.url);
-        resolve(url)
+        console.log(url);
+        resolve(url);
       }, err => {
+        console.log('rejected'); 
         reject(err);
       });
     });
@@ -79,7 +91,7 @@ export class PostService {
           }
         }
       };
-      console.log('Uploading');
+      
       xhr.send(file);
     });
   }
@@ -99,18 +111,18 @@ export class PostService {
       Expire_Date: resource.expireDate,
       Events: resource.events
     };
-    return this.http.post(this.url + '/create', reMapped)
+    return this.http.post(this.url + '/posts/create', reMapped)
     .catch(this.handleError);
   }
 
   update(resource){
-    return this.http.post(this.url + '/update/' + resource.oldPost.Post_ID,resource)
+    return this.http.post(this.url + '/posts/update/' + resource.oldPost.Post_ID,resource)
 
       .catch(this.handleError);
   }
 
   delete (id){
-    return this.http.delete(this.url + '/' + id)
+    return this.http.delete(this.url + '/posts/' + id)
       .retry(3)
       .catch(this.handleError);
   }

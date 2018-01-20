@@ -19,7 +19,7 @@ export class EventTreeComponent implements OnInit {
   allEvents = [];
   treeviewItems : TreeviewItem[];
   treeviewConfig = {
-    hasAllCheckBox: true,
+    hasAllCheckBox: false,
     hasFilter: true,
     hasCollapseExpand: true,
     decoupleChildFromParent: false,
@@ -27,7 +27,8 @@ export class EventTreeComponent implements OnInit {
   };
 
   constructor(private postService: PostService) {
-
+    
+    
   }
 
   ngOnInit() {
@@ -35,10 +36,10 @@ export class EventTreeComponent implements OnInit {
       this.allEvents = events;
       this.treeviewItems = this.createTreeStructure(events);
     });
-  }
-
-  createTreeStructure(eventList: Array<any>) {
     
+  }
+  // Creates a tree based of an array of events with multiple properties
+  createTreeStructure(eventList: Array<any>) {
     
     let treeviewItems : TreeviewItem[] = [];
 
@@ -57,8 +58,7 @@ export class EventTreeComponent implements OnInit {
       let programs = Array.from(new Set(eventsForYear.map( ev => ev['EventTypeName']))).sort();
       // PROGRAM / EVENT TYPE
       programs.forEach(program => {
-        
-        
+
         let programBranch = new TreeviewItem({
           text:program,
           value: topValue + '-' + year + '-' + program
@@ -78,7 +78,12 @@ export class EventTreeComponent implements OnInit {
             let value = topValue + '-' + year + '-' + (program as String).replace(' ', '') + '-' + eventAtLForPForY['EventID'];
             this.valueToIDTable[value] = eventAtLForPForY;
             // Event Leafs
-            let eventLeaf = new TreeviewItem({text:eventAtLForPForY['EventName'], value: value})
+            let checked = false;
+            if(this.prechecked.indexOf(eventAtLForPForY['EventID']) != -1){
+              checked = true;
+            }
+            let eventLeaf = new TreeviewItem({text:eventAtLForPForY['EventName'], value: value, checked });
+
             if(!locationBranch.children){
               locationBranch.children = [eventLeaf];
             }else{
@@ -110,7 +115,6 @@ export class EventTreeComponent implements OnInit {
     return treeviewItems;
     
   }
-
   onSelectedChange(event){
 
     this.selectedEvents = (event as string[]).map(value => {
@@ -131,5 +135,4 @@ export class EventTreeComponent implements OnInit {
     });
     this.seletedChanged.emit({selected:this.selectedEvents, total: this.allEvents.length});
   }
-
 }

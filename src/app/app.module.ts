@@ -50,12 +50,12 @@ import { UserSettingsComponent } from './components/user-settings/user-settings.
     RouterModule.forRoot([
       { path: '', component: PostsComponent, canActivate: [AuthGuard] },
       { path: 'posts/add', component: PostFormComponent, canActivate: [AuthGuard] },
+      { path: 'posts/edit/:id', component: PostFormComponent, canActivate: [AuthGuard] },
       { path: 'users/add', component: UserFormComponent, canActivate: [AuthGuard, AdminAuthGuard] },
       { path: 'users/me', component: UserSettingsComponent, canActivate: [AuthGuard]},
       { path: 'users', component: UsersComponent, canActivate: [AuthGuard, AdminAuthGuard] },
       { path: 'login', component: LoginComponent },
       { path: 'no-access', component: NoAccessComponent },
-      
     ])
   ],
   providers: [

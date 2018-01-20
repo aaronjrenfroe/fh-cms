@@ -7,12 +7,13 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import { JwtHelper, tokenNotExpired } from 'angular2-jwt';
+import { environment } from '../../environments/environment';
 
 
 @Injectable()
 export class AuthService {
 
-  private apiUri = "http://localhost:3000";
+  private apiUri = environment.apiUrl;
 
   constructor(private http: HttpClient) {
     
@@ -24,7 +25,7 @@ export class AuthService {
 
   login(credentials) {
 
-    let fullurl = this.apiUri + '/api/user/login';
+    let fullurl = this.apiUri + '/user/login';
 
     return this.http.post(fullurl, credentials, 
       {observe: 'response'}).map(data => {  // getting full response with headers 
@@ -32,29 +33,16 @@ export class AuthService {
         let result = data.body;
         // Auth was good
         if(result && token){
-          
           localStorage.setItem("token", token);
-          
           return true;
         }else{
           return false;
         }
-    }).catch((err: any, caught) => {
-      // what do I return here so returns the same value as this 
-
-      // Doesn't work : core.js:1427 ERROR TypeError: Cannot read property 'subscribe' of undefined
-       return Observable.create(false); 
-
-      // Doesn't work : core.js:1427 ERROR TypeError: Cannot read property 'subscribe' of undefined
-      // let obsv : Observable<boolean> = Observable.create(false);
-      // return obsv.map( () => {
-      //   return false;
-      // });
     });
   }
 
   logout() {
-    let fullurl = this.apiUri + '/api/user/me/';
+    let fullurl = this.apiUri + '/user/me/';
     const token = localStorage.getItem('token');
     localStorage.removeItem('token');
     return this.http.delete(fullurl, {

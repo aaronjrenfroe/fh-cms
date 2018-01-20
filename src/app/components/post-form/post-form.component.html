@@ -31,7 +31,7 @@
             <!-- image upload -->
             <div class="form-group">
               <label for="exampleFormControlFile1" data-toggle="tooltip">background image</label>
-              <span class="text-muted float-right" data-placement="right" title="1080w x 608h and < 10mb (jpg, jpeg, png, gif)">requirments</span>
+              <span class="text-muted float-right" data-placement="right" title="1080w x 608h and < 10mb (jpg, jpeg, png, gif)">requirements</span>
               <input type="file" class="form-control-file" id="image" (change)="onFileChange($event)">
             </div>
             <!-- body type radio buttons -->
@@ -94,7 +94,7 @@
     </div>
     <div class="col-md-5 col-sm-5 col-xs-5" style="margin-top:30px;">
         <span class="text-muted float-right" data-placement="right" title="If 0 events are selected the post will be visible to all events" >?</span>
-        <event-tree (seletedChanged)="onSelectedChange($event)" ></event-tree>
+        <event-tree (seletedChanged)="onSelectedChange($event)" [prechecked]="(postToEdit) ? postToEdit.Events : []" ></event-tree>
     </div>
   </div>
   

@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment';
 import { AppError } from './../common/app-error';
 import { BadInputError } from './../common/bad-input';
 import { NotFoundError } from './../common/not-found-error';
@@ -20,26 +21,26 @@ export class UserService{
   url : string
 
   constructor(private http: HttpClient) {
-    this.url = 'http://localhost:3000/api/user';
+    this.url = environment.apiUrl+'/user';
   }
 
   getAll(callback){
+    console.log(this.url);
+    
     this.http.get(this.url).subscribe((data) => {
       return callback(data);
     }, (err) => {
-      // this.handleError(err);
-      console.log(err);
+      //this.handleError(err);
+      alert("could not get users: " + err);
     })
   }
   create(resource){
-    console.log(resource);
-    
     return this.http.post( this.url + '/', resource)
       .catch(this.handleError);
   }
 
   update(resource){
-    console.log("Running");
+    
     
     return this.http.post(this.url + '/' + resource._id, resource)
       .catch(this.handleError);
@@ -61,5 +62,5 @@ export class UserService{
       return Observable.throw(new AppError(error));
     }
   }
-
+  
 }

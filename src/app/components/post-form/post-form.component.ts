@@ -1,10 +1,11 @@
 import { SessionService } from './../../services/session.service';
 import { PostService } from './../../services/post.service';
 import { Component, OnInit, Inject,Input, Output } from '@angular/core';
+import {Location} from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EventEmitter } from 'events';
 import { TreeviewItem, TreeviewComponent, TreeviewConfig } from 'ngx-treeview';
-import { forEach } from '@angular/router/src/utils/collection';
+import { Params, ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -29,20 +30,12 @@ export class PostFormComponent implements OnInit {
   selectedEvents: number[];
   totalNumberOfEvents = 0;
   form_image;
-  constructor(@Inject(FormBuilder) fb: FormBuilder, private postService: PostService, private sessionService: SessionService){
-    let post = sessionService.getRouteObject('edit-post')
-    if(post){
-      this.postToEdit = post
-      this.isEditing = true
-      console.log('Editing', post);
-    }
-
-    if(this.isEditing){
-      this.submitButtonText = 'update';
-      
-    }
-
-    this.initForm(fb);
+  constructor(@Inject(FormBuilder) private fb: FormBuilder,
+                                  private postService: PostService,
+                                  private sessionService: SessionService,
+                                  private activatedRoute: ActivatedRoute,
+                                  private location: Location){
+    this.initForm(this.fb);
   }
 
   initForm(fb){
@@ -85,15 +78,33 @@ export class PostFormComponent implements OnInit {
   }
 
   onSelectedChange(events){
-    
-    console.log(events);
-    
     this.selectedEvents = events.selected;
     this.totalNumberOfEvents = events.total;
   }
 
   ngOnInit() {
-
+    
+    let path = this.activatedRoute.routeConfig.path;
+    
+    if(path.search('edit/:id')!= -1){
+      this.postToEdit = this.sessionService.getRouteObject('edit-post');
+      this.isEditing = true
+      this.submitButtonText = 'update';
+      // if ! post get post from server or cache
+      if(!this.postToEdit){
+        this.activatedRoute.params.subscribe((params: Params) => {
+          let postId = params['id'];
+          this.postService.getPost(postId, (data) => {
+            this.postToEdit = data;
+            this.initForm(this.fb);
+          })
+        });
+      }else{
+        this.initForm(this.fb);
+      }
+    }else{
+      this.initForm(this.fb);
+    }
   }
 
   onFileChange(event) {
@@ -116,7 +127,6 @@ export class PostFormComponent implements OnInit {
       
       for(let wordIndx in splitTags){
         let lcw = splitTags[wordIndx].toLowerCase();
-        
         if(tagStr.search(lcw) == -1){
           tagStr += lcw + ' ';
         }
@@ -129,40 +139,47 @@ export class PostFormComponent implements OnInit {
       let url = await this.postService.uploadImage(this.form_image)
       formValue.image = url;
     }
-        // Update
-    if(this.isEditing) {
-      if(formValue.image == null){
-        formValue.image = this.postToEdit.Thumnail_Url;
-      }
-      
-      
-      let data = { 
-        newPost: formValue,
-        oldPost: this.postToEdit
-      }
-      console.log(formValue);
-      
-      this.postService.update(data).subscribe((good) => {
-        this.goodPostCreation = true;
-        this.badPostCreation = false;
-        // if good
-        // navigtate back to post page
-      }, (err) => {
-        this.badPostCreation = true
-        this.goodPostCreation = false;
-      })
-      
-    }else{ // Create
-      this.postService.create(formValue).subscribe((good) => {
-        this.goodPostCreation = true;
-        this.badPostCreation = false;
-        // if good
-        // navigtate back to post page
-      }, (err) => {
-        this.badPostCreation = true
-        this.goodPostCreation = false;
-      })
+    // Bound Event Count Confirmation
+    let eventCountBelowThreshold = this.selectedEvents.length < 20 && this.selectedEvents.length > 0;
+    let eventCountText = this.selectedEvents.length > 0 ? this.selectedEvents.length : 'all';
+    if(eventCountBelowThreshold || confirm("Confirm you would like to bind this post to "+eventCountText+" events")){
+          // Update
+      if(this.isEditing) {
+        if(formValue.image == null){
+          formValue.image = this.postToEdit.Thumnail_Url;
+        }
+        
+        
+        let data = { 
+          newPost: formValue,
+          oldPost: this.postToEdit
+        }
+        
+        
+        this.postService.update(data).subscribe((good) => {
+          this.goodPostCreation = true;
+          this.badPostCreation = false;
+          // if good
+          // navigtate back to post page
+          this.location.back();
+        }, (err) => {
+          this.badPostCreation = true
+          this.goodPostCreation = false;
+        })
+        
+      }else{ // Create
+        this.postService.create(formValue).subscribe((good) => {
+          this.goodPostCreation = true;
+          this.badPostCreation = false;
+          this.location.back();
+          // if good
+          // navigtate back to post page
+        }, (err) => {
+          this.badPostCreation = true
+          this.goodPostCreation = false;
+        })
 
+      }
     }
   }
 

@@ -5,7 +5,6 @@ export class AppErrorHandler implements ErrorHandler{
 
     handleError(error){
         // Do something
-        console.log(error);
         alert('An Unexpected error occured' );
     }
 }

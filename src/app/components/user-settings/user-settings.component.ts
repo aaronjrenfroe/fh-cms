@@ -17,13 +17,9 @@ export class UserSettingsComponent implements OnInit {
   passwordForm = this.getNewPasswordForm();
 
   constructor(private userService: UserService,private postService: PostService, private auth: AuthService) {
-    this.user = auth.currentUser
-
-    console.log(this.user);
+    this.user = auth.currentUser;
     this.userForm = this.getNewForm();
     this.passwordForm = this.getNewPasswordForm();
-    console.log(this.userForm, this.passwordForm);
-    
   }
 
   getNewForm(){
@@ -91,19 +87,18 @@ export class UserSettingsComponent implements OnInit {
     this.userService.update(updatedUser);
     this.userService.update(updatedUser).subscribe((user)=> {
       this.userForm = this.getNewForm();
-      console.log(user);
+      
     });
   }
 
   resetPassword(){
-    console.log(this.passwordForm);
+    
     let formValue = this.passwordForm.value;
     let updatedUser = {}
     updatedUser["_id"] = this.user._id
     updatedUser["password"] = formValue.password;
     this.userService.update(updatedUser).subscribe((user)=> {
-      console.log(user);
-      
+      alert("Password was reset");
     });
   }
   get password(){

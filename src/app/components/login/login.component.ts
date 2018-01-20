@@ -4,8 +4,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PasswordValidators } from './Password.validators';
 import { AuthService } from '../../services/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http/src/response';
+
 import { Observable } from 'rxjs/Observable';
+import { isType } from '@angular/core/src/type';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -41,17 +43,20 @@ export class LoginComponent implements OnInit {
 
   login(){
     let value = this.form.value;
-    console.log("Im at 1");
+    
     this.auth.login(value).subscribe(userIsAuthed => {
-      console.log("Are we stuck here? ", userIsAuthed);
-      console.log("Im at 4");
+      
       if(userIsAuthed){
         let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
         this.router.navigate([returnUrl || '/' ]);
       }else{
         this.authFailed = true;
       }
-    });
-    console.log("Im at 5");
+    },(err)=> {
+      if (err instanceof HttpErrorResponse){
+        this.authFailed = true;
+        console.log('login failed');
+      }
+    }); 
   }
 }
