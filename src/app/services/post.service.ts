@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { AuthService } from './auth.service';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { DataService } from './data.service';
+
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';

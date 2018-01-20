@@ -1,4 +1,3 @@
-import { dirname } from 'path';
 
 const express = require('express');
 
