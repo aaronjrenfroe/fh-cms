@@ -26,7 +26,7 @@ export class EventTreeComponent implements OnInit {
     maxHeight: window.screen.height - 400
   };
 
-  constructor(private postService: PostService) {
+  constructor(public postService: PostService) {
     
     
   }

@@ -15,7 +15,7 @@ export class PostsComponent implements OnInit {
   searchTerms = [];
   searchResults = [];
   allEvents : any[] = [];
-  constructor(private postService: PostService, private auth: AuthService, private sessionService: SessionService) {
+  constructor(public postService: PostService, public auth: AuthService, public sessionService: SessionService) {
     // consttructor needs PostService to edit posts
     postService.getAll((posts) => {
       this.posts = posts

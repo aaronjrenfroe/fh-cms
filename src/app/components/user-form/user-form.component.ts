@@ -32,7 +32,7 @@ export class UserFormComponent{
     role: new FormControl(''),
   })
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(public userService: UserService, public router: Router) { }
 
   passCheck(){
     if(this.password.value != this.password2.value){

@@ -16,7 +16,7 @@ export class UserSettingsComponent implements OnInit {
   userForm;
   passwordForm = this.getNewPasswordForm();
 
-  constructor(private userService: UserService,private postService: PostService, private auth: AuthService) {
+  constructor(public userService: UserService,public postService: PostService, public auth: AuthService) {
     this.user = auth.currentUser;
     this.userForm = this.getNewForm();
     this.passwordForm = this.getNewPasswordForm();

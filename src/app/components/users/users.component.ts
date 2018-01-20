@@ -22,10 +22,10 @@ export class UsersComponent implements OnInit {
   passwordForm = this.getPasswordForm();
   
 
-  constructor(private userService: UserService,
-     private postService: PostService,
-     private auth: AuthService
-     ) { // private router: Router this.router.navigate(['/']);
+  constructor(public userService: UserService,
+     public postService: PostService,
+     public auth: AuthService
+     ) { // public router: Router this.router.navigate(['/']);
 
    }
 

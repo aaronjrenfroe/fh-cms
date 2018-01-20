@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class NavBarComponent {
   
-  constructor(private auth: AuthService){
+  constructor(public auth: AuthService){
     
   }
 

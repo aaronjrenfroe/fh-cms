@@ -30,11 +30,11 @@ export class PostFormComponent implements OnInit {
   selectedEvents: number[];
   totalNumberOfEvents = 0;
   form_image;
-  constructor(@Inject(FormBuilder) private fb: FormBuilder,
-                                  private postService: PostService,
-                                  private sessionService: SessionService,
-                                  private activatedRoute: ActivatedRoute,
-                                  private location: Location){
+  constructor(@Inject(FormBuilder) public fb: FormBuilder,
+                                  public postService: PostService,
+                                  public sessionService: SessionService,
+                                  public activatedRoute: ActivatedRoute,
+                                  public location: Location){
     this.initForm(this.fb);
   }
 
