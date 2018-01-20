@@ -26,6 +26,7 @@ import { TreeviewModule } from 'ngx-treeview';
 import { EventTreeComponent } from './components/event-tree/event-tree.component';
 import { SessionService } from './services/session.service';
 import { UserSettingsComponent } from './components/user-settings/user-settings.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { UserSettingsComponent } from './components/user-settings/user-settings.
     UsersComponent,
     LoginComponent,
     NoAccessComponent,
+    NotFoundComponent,
     NavBarComponent,
     DashboardComponent,
     UserFormComponent,
