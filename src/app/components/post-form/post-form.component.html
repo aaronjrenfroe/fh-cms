@@ -11,7 +11,7 @@
       <div class="container ">
         <div class="card-body">
            
-          <h4 class="card-title">content</h4>
+          <h4 class="card-title">Content</h4>
           <!-- form -->
           <form [formGroup]="form" (ngSubmit)="createPost()">
             <!-- title-->
@@ -84,7 +84,7 @@
               <input class="form-control" placeholder="0" formControlName="expireDate" type="date" id="expireDate">
             </div>
             <div class="form-group no-margin">
-              <button class="btn btn-lg btn-primary btn-block" type="submit">{{this.isEditing ? 'update' : 'create'}}</button>
+              <button class="btn btn-lg btn-success btn-block" type="submit">{{this.isEditing ? 'update' : 'create'}}</button>
                 <div *ngIf="goodPostCreation" class="alert alert-success">Post {{ this.isEditing? 'updated' : 'created'}}</div>
                 <div *ngIf="badPostCreation" class="alert alert-danger"> could not  {{ this.isEditing ? 'update' : 'create'}}, make sure required fields are completed</div>
             </div>

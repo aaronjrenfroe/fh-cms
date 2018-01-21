@@ -32,7 +32,6 @@ export class PostsComponent implements OnInit {
     userService.getAll((users => {
       users.forEach(user => {
         this.users[user._id] = user.username;
-        
       });
       console.log(this.users);
       
@@ -106,15 +105,7 @@ export class PostsComponent implements OnInit {
     this.updateSearch();
   }
 
-  getEventNameForID(id){
-    let event = this.allEvents.filter((event) =>{
-      return event.EventID == id;
-    });
-    if(event.length > 0){
-      return event[0].EventName;
-    }
-    return 'Unknown event with id: ' + id;
-  }
+  
 
   getMonthYear(timestamp){
     let date = new Date(timestamp);

@@ -27,6 +27,7 @@ import { EventTreeComponent } from './components/event-tree/event-tree.component
 import { SessionService } from './services/session.service';
 import { UserSettingsComponent } from './components/user-settings/user-settings.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { PostPreviewComponent } from './components/post-preview/post-preview.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     UserFormComponent,
     PostFormComponent,
     EventTreeComponent,
-    UserSettingsComponent
+    UserSettingsComponent,
+    PostPreviewComponent
   ],
   imports: [
     BrowserModule,
