@@ -25,7 +25,7 @@ export class PostsComponent implements OnInit {
       this.selectedPost = posts[0];
       this.updateSearch();
     });
-
+    
     postService.getAllEvents((events) => {
       this.allEvents = events
     });

@@ -64,5 +64,4 @@ export class PostPreviewComponent implements OnInit {
       return `Visable the day the post was created: ${createdMoment.format('MMM D, YYYY')}`;
     }
   }
-
 }
