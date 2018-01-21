@@ -5,26 +5,48 @@
   </div>
   <form class="form-inline my-2 my-lg-0">
     <input class="form-control mr-sm-4" type="search" placeholder="Search" (keyup)="searchKeyUp($event)" aria-label="Search">
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
   </form>
   <br>
   <div class="row">
-    <div class="col-5 left-down box">
-      <div class="list-group scroll">
+    <div class="col-7 col-md-push-7">
+      <div class="list-group">
+          <!-- Start -->
         <div *ngFor="let post of searchResults" class="list-group-item flex-column list-group-item-action align-items-start clearfix" (click)="postWasClicked(post)">  
-            <small class="float-right text-muted">{{post.Date_Visable?  "Offset: " +post.Date_Visable : ''}}</small>
+            <small class="float-right text-muted">{{post.Date_Visable?  "Offset: " +post.Date_Visable : 'No offset'}}</small>
             <div class="media">
                 <img class="align-self-start mr-3" src="{{post.Thumnail_Url}}" alt="Generic placeholder image" width="64px">
                 <div class="media-body">
-                  <h5 class="mt-0">{{post.Title}}</h5>
+                  <h5 class="mt-0">{{post.Title}}</h5> <span class="text-muted text-sm">author: {{users[post.User_ID]}}</span> 
                   <p class="mb-1">{{ post.Excerpt }}</p>
+                  
                 </div>
               </div>
             <!-- End -->
         </div>
       </div>
+      <!-- 
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Year</th>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Visability</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let post of searchResults">
+              <td>{{getMonthYear(post.Timestamp)}}</td>
+            <td>{{post.Title}}</td>
+            <td>{{post.User_ID}}</td>
+            <td>{{post.Date_Visable?  "Offset: " +post.Date_Visable : 'No offset'}}</td>
+          </tr>
+        </tbody>
+      </table>
+        End -->
     </div>
-    <div class="col-7 float-right">
+
+    <div class="col-5 col-md-pull-5">
       <div *ngIf="selectedPost" class="tab-content ">
         <div class="clearfix">
             <!-- Only show if user is admin or post belongs to user-->
@@ -36,11 +58,10 @@
           <h6>Discription: </h6>
           <div>{{selectedPost.Excerpt}}</div>  
           <h6>Body: </h6>
-          <div *ngIf="selectedPost.Post_Type == 'text'">{{selectedPost.Body}}</div>
+          <div *ngIf="selectedPost.Post_Type == 'text'">{{viewBody}}</div>
           <div *ngIf=" selectedPost.Post_Type != 'text'">
             <a href="{{selectedPost.Body}}" target="_blank">{{selectedPost.Post_Type }} ink</a>
           </div>
-          
           <div *ngIf="selectedPost.Events.length > 0">
             <h6>Bound Events: {{selectedPost.Events.length}}</h6>
             <ul>

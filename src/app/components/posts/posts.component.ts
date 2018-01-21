@@ -1,3 +1,4 @@
+import { UserService } from './../../services/user.service';
 import { Router } from '@angular/router';
 import { AuthService } from './../../services/auth.service';
 import { PostService } from './../../services/post.service';
@@ -15,23 +16,36 @@ export class PostsComponent implements OnInit {
   searchTerms = [];
   searchResults = [];
   allEvents : any[] = [];
-  constructor(public postService: PostService, public auth: AuthService, public sessionService: SessionService) {
+  users = {};
+
+  constructor(public postService: PostService, public auth: AuthService, public sessionService: SessionService, private userService: UserService) {
     // consttructor needs PostService to edit posts
     postService.getAll((posts) => {
       this.posts = posts
       this.selectedPost = posts[0];
-      
-      
       this.updateSearch();
     });
+
     postService.getAllEvents((events) => {
       this.allEvents = events
-    })
+    });
+    userService.getAll((users => {
+      users.forEach(user => {
+        this.users[user._id] = user.username;
+        
+      });
+      console.log(this.users);
+      
+    }))
    }
 
   ngOnInit() {
     // get posts from server
     this.sessionService.setRouteObject('edit-post',null);
+  }
+
+  get viewBody(){
+    return this.selectedPost.Body.replace('\n', '<br>');
   }
 
   updateSearch(){
@@ -74,8 +88,8 @@ export class PostsComponent implements OnInit {
     }
   }
 
-
   edit(){
+    console.log(this.selectedPost);
     
     this.sessionService.setRouteObject('edit-post', this.selectedPost);
     // remove post from serverside db using postService
@@ -100,6 +114,12 @@ export class PostsComponent implements OnInit {
       return event[0].EventName;
     }
     return 'Unknown event with id: ' + id;
+  }
+
+  getMonthYear(timestamp){
+    let date = new Date(timestamp);
+    let year = date.getFullYear();
+    return year;
   }
   
 }

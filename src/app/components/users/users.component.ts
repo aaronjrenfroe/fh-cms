@@ -77,8 +77,8 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  delete(user){
-    
+  delete(){
+    let user = this.editingUser;
     let idx = this.users.indexOf(user);
     this.users.splice(idx, 1);
     this.userService.delete(user._id).subscribe(deletedUser => {
