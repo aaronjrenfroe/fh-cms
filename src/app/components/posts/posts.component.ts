@@ -33,7 +33,7 @@ export class PostsComponent implements OnInit {
       users.forEach(user => {
         this.users[user._id] = user.username;
       });
-      console.log(this.users);
+      
       
     }))
    }
@@ -70,6 +70,22 @@ export class PostsComponent implements OnInit {
     } 
   }
 
+  // Called by post-preview when button is pressed; 
+  editOrDelete($event){
+    console.log($event);
+    
+    switch ($event) {
+      case 'edit':
+        this.edit();
+        break;
+      case 'delete':
+        this.delete();
+        break;
+      default:
+        break;
+   }
+
+  }
   delete(){
    
     if(confirm("Are you sure to delete post titled "+this.selectedPost.Title)) {
@@ -77,7 +93,7 @@ export class PostsComponent implements OnInit {
       let deleted_post = this.posts.splice(idx, 1);
 
       this.postService.delete(deleted_post[0].Post_ID).subscribe((post => {
-        this.posts.splice(idx,1);
+        
         this.selectedPost = null;
       }), error => {
         if(error){
@@ -88,7 +104,6 @@ export class PostsComponent implements OnInit {
   }
 
   edit(){
-    console.log(this.selectedPost);
     
     this.sessionService.setRouteObject('edit-post', this.selectedPost);
     // remove post from serverside db using postService
@@ -96,7 +111,6 @@ export class PostsComponent implements OnInit {
 
   postWasClicked(post){
     this.selectedPost = post;
-    
   }
   
   searchKeyUp(event){

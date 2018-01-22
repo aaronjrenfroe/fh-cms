@@ -1,11 +1,11 @@
 <div *ngIf="selectedPost" class="tab-content ">
   <div class="clearfix">
       <!-- Only show if user is admin or post belongs to user-->
-      <a class="btn btn-warning btn-sm float-right" routerLink="/posts/edit/{{selectedPost.Post_ID}}" (click)="edit()" *ngIf="canEdit" style="margin-right: 10px;"> edit</a>
-      <button (click)="delete()"class="btn btn-danger btn-sm float-right " *ngIf="canEdit" style="margin-right: 10px;">delete</button>
+      <a class="btn btn-warning btn-sm float-right" routerLink="/posts/edit/{{selectedPost.Post_ID}}" (click)="onButtonPressed('edit')" *ngIf="canEdit" style="margin-right: 10px;"> edit</a>
+      <button (click)="onButtonPressed('delete')"class="btn btn-danger btn-sm float-right " *ngIf="canEdit" style="margin-right: 10px;">delete</button>
     <h5> {{selectedPost.Title}}</h5>
     <hr>
-    <img class="rounded img-thumbnail text-center" src="{{selectedPost.Thumnail_Url}}" style="margin:10px;">
+    <img class="rounded img-thumbnail text-center" src="{{selectedPost.Thumnail_URL}}" style="margin:10px;">
    
     <h6>Discription: </h6>
     <div>{{selectedPost.Excerpt}}</div>  
@@ -13,7 +13,7 @@
     <h6>Body: </h6>
     <div *ngIf="selectedPost.Post_Type == 'text'">{{selectedPost.Body}}</div>
     <div *ngIf=" selectedPost.Post_Type != 'text'">
-      <a href="{{selectedPost.Body}}" target="_blank">{{selectedPost.Post_Type }} ink</a>
+      <a href="{{selectedPost.Body}}" target="_blank">{{selectedPost.Post_Type }} Link</a>
     </div>
     <br>
     <h6>Binding</h6>

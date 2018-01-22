@@ -25,7 +25,7 @@ export class UserService{
   }
 
   getAll(callback){
-    console.log(this.url);
+    
     
     this.http.get(this.url).subscribe((data) => {
       return callback(data);

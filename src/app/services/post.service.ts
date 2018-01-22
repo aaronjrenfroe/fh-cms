@@ -62,16 +62,16 @@ export class PostService {
   }
 
   uploadImage(file){
-    console.log("uploadingImage");
+    
     
     return new Promise((resolve, reject) => {
       this.http.get(this.url+`/image/sign-s3?file-name=${file.name}&file-type=${file.type}`).subscribe(async (res: any) => {
 
         let url = await this.uploadFile(file, res.signedRequest, res.url);
-        console.log(url);
+        
         resolve(url);
       }, err => {
-        console.log('rejected'); 
+        
         reject(err);
       });
     });
@@ -104,7 +104,7 @@ export class PostService {
       Title: resource.title,
       User_ID: this.auth.currentUser._id,
       Excerpt: resource.subject,
-      Thumnail_Url: resource.image,
+      Thumnail_URL: resource.image,
       Post_Type: resource.bodyType,
       Body: resource.body,
       Date_Visable: resource.offset,

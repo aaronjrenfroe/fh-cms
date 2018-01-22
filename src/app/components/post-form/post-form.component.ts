@@ -146,7 +146,7 @@ export class PostFormComponent implements OnInit {
           // Update
       if(this.isEditing) {
         if(formValue.image == null){
-          formValue.image = this.postToEdit.Thumnail_Url;
+          formValue.image = this.postToEdit.Thumnail_URL;
         }
         
         

@@ -1,5 +1,5 @@
 import { PostService } from './../../services/post.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as moment from 'moment';
 
 
@@ -12,6 +12,8 @@ export class PostPreviewComponent implements OnInit {
 
   @Input('post') selectedPost;
   @Input() canEdit; 
+
+  @Output('onButtonPress') buttonPressEmmiter = new EventEmitter();
 
   allEvents = [] 
 
@@ -32,6 +34,10 @@ export class PostPreviewComponent implements OnInit {
       return event[0].EventName;
     }
     return 'Unknown event with id: ' + id;
+  }
+
+  onButtonPressed(button){
+    this.buttonPressEmmiter.emit(button);
   }
 
   get visableText(){
@@ -60,8 +66,10 @@ export class PostPreviewComponent implements OnInit {
       }
     }else{
       let createdMoment = moment(this.selectedPost.Timestamp);
-      console.log(this.selectedPost);
+      
       return `Visable the day the post was created: ${createdMoment.format('MMM D, YYYY')}`;
     }
   }
+
+
 }

@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { UsernameValidators } from './../login/Username.validators';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PostService } from './../../services/post.service';
@@ -16,7 +17,7 @@ export class UserSettingsComponent implements OnInit {
   userForm;
   passwordForm = this.getNewPasswordForm();
 
-  constructor(public userService: UserService,public postService: PostService, public auth: AuthService) {
+  constructor(public userService: UserService, public postService: PostService, public auth: AuthService, private router: Router) {
     this.user = auth.currentUser;
     this.userForm = this.getNewForm();
     this.passwordForm = this.getNewPasswordForm();
@@ -91,14 +92,16 @@ export class UserSettingsComponent implements OnInit {
     });
   }
 
-  resetPassword(){
+  changePassword(){
     
     let formValue = this.passwordForm.value;
     let updatedUser = {}
     updatedUser["_id"] = this.user._id
     updatedUser["password"] = formValue.password;
     this.userService.update(updatedUser).subscribe((user)=> {
-      alert("Password was reset");
+      alert("Password change successful. You will be logged out now.");
+      this.auth.unauthenticate();
+      this.router.navigate(['/login']);
     });
   }
   get password(){

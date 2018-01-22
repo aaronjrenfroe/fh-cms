@@ -42,15 +42,20 @@ export class AuthService {
   }
 
   logout() {
+    
     let fullurl = this.apiUri + '/user/me/';
-    const token = localStorage.getItem('token');
-    localStorage.removeItem('token');
+    this.unauthenticate();
     return this.http.delete(fullurl, {
       observe: 'response'  // getting full response with headers 
     });
     
   }
 
+  unauthenticate(){
+    const token = localStorage.getItem('token');
+    localStorage.removeItem('token');
+    
+  }
 
   get currentUser() {
     const token = localStorage.getItem('token');

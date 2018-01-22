@@ -12,9 +12,9 @@
       <div class="list-group">
           <!-- Start -->
         <div *ngFor="let post of searchResults" class="list-group-item flex-column list-group-item-action align-items-start clearfix" (click)="postWasClicked(post)">  
-            <small class="float-right text-muted">{{post.Date_Visable?  "Offset: " +post.Date_Visable : 'No offset'}}</small>
+            <small class="float-right text-muted">{{post.Date_Visable?  "Offset: " +post.Date_Visable : 'No offset'}} Events: {{post.Events.length}}</small>
             <div class="media">
-                <img class="align-self-start mr-3" src="{{post.Thumnail_Url}}" alt="Generic placeholder image" width="64px">
+                <img class="align-self-start mr-3" src="{{post.Thumnail_URL}}" alt="Generic placeholder image" width="64px">
                 <div class="media-body">
                   <h5 class="mt-0">{{post.Title}}</h5> <span class="text-muted text-sm">author: {{users[post.User_ID]}}</span> 
                   <p class="mb-1">{{ post.Excerpt }}</p>
@@ -47,7 +47,7 @@
     </div>
 
     <div class="col-5 col-md-pull-5">
-      <post-preview *ngIf="selectedPost" [post]="selectedPost" [canEdit]="this.auth.currentUser._id == selectedPost.User_ID || this.auth.currentUser.access == 'admin'"></post-preview>
+      <post-preview *ngIf="selectedPost" (onButtonPress)="editOrDelete($event)" [post]="selectedPost" [canEdit]="this.auth.currentUser._id == selectedPost.User_ID || this.auth.currentUser.access == 'admin'"></post-preview>
     </div>
   </div>
 </div>
