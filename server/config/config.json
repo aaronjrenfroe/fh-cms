@@ -7,9 +7,9 @@
   "development": {
     "PORT": 3000,
     "MONGODB_URI": "mongodb://localhost:27017/Posts",
-    "JWT_SECRET": "pojiaj234oi234oij234oij4",
-    "AWS_SECRET_ACCESS_KEY":   "AMzXFEjNmbPhEVXErnHuKIF6RA0ksTDlAOuEAHJL",
-    "AWS_ACCESS_KEY_ID": "AKIAILXZHIH7YNGJ4PRQ",
-    "S3_BUCKET_NAME": "foresthomeapppostimages"
+    "JWT_SECRET": "xxxx",
+    "AWS_SECRET_ACCESS_KEY":   "xxx",
+    "AWS_ACCESS_KEY_ID": "xxx",
+    "S3_BUCKET_NAME": "xxx"
   }
 }
